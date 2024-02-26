@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Калькулятор";
+}
+
+<head>
+    <title>Простой калькулятор</title>
+</head>
+
+<body onload="randonExpression();">
+    <div id="container">
+        <div id="calculator">
+            <form method="post" action="/">
+                <div id="result">
+                    <div id="history">
+                        <input type="text" id="expression" value=@ViewData["expression"] name="input" }>
+                    </div>
+                    <div id="output">
+                        <p id="output-value">@ViewData["result"]</p>
+                        <p id="error">@ViewData["error"]</p>
+                    </div>
+                </div>
+
+                <button class="operator" id="=" width="300">=</button>
+            </form>
+            <div id="keyboard">
+                <button class="operator" id="clear" onclick="clearText(1)">C</button>
+                <button class="empty" id="empty"></button>
+                <button class="empty" id="empty"></button>
+                <button class="operator" id="/" onclick="sumText('/')">&#247;</button>
+                <button class="number" id="7" onclick="sumText(7)">7</button>
+                <button class="number" id="8" onclick="sumText(8)">8</button>
+                <button class="number" id="9" onclick="sumText(9)">9</button>
+                <button class="operator" id="*" onclick="sumText('*')">&times;</button>
+                <button class="number" id="4" onclick="sumText(4)">4</button>
+                <button class="number" id="5" onclick="sumText(5)">5</button>
+                <button class="number" id="6" onclick="sumText(6)">6</button>
+                <button class="operator" id="-" onclick="sumText('-')">-</button>
+                <button class="number" id="1" onclick="sumText(1)">1</button>
+                <button class="number" id="2" onclick="sumText(2)">2</button>
+                <button class="number" id="3" onclick="sumText(3)">3</button>
+                <button class="operator" id="+" onclick="sumText('+')">+</button>
+                <button class="empty" id="empty"></button>
+                <button class="number" id="0" onclick="sumText(0)">0</button>
+                <button class="empty" id="empty"></button>
+            </div>
+        </div>
+        @if (ViewBag.countExpressions != null)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <td>История запросов
+                    <tr>
+                        <th>Номер
+                        <th>Выражение
+                        <th>Результат
+                </thead>
+
+                @for (int i = 0; i < ViewBag.countExpressions; i++)
+                {
+                    <tbody>
+                        <tr>
+                            <th>@(@i + 1)
+                            <th>@ViewBag.expressions[i]
+                            <th>@ViewBag.results[i]
+                    </tbody>
+                }
+            </table>
+        }
+    </div>
+
+</body>
