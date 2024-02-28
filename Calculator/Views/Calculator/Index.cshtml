@@ -8,7 +8,7 @@
     <title>Простой калькулятор</title>
 </head>
 
-<body onload="randonExpression();">
+<body onload="inputExpression();">
     <div id="container">
         <div id="calculator">
             <form method="post" action="/">
@@ -25,9 +25,9 @@
                 <button class="operator" id="=" width="300">=</button>
             </form>
             <div id="keyboard">
-                <button class="operator" id="clear" onclick="clearText(1)">C</button>
-                <button class="empty" id="empty"></button>
-                <button class="empty" id="empty"></button>
+                <button class="operator" id="clear" onclick="clearText()">C</button>
+                <button class="operator" onclick="sumText('(')">(</button>
+                <button class="operator" onclick="sumText(')')">)</button>
                 <button class="operator" id="/" onclick="sumText('/')">&#247;</button>
                 <button class="number" id="7" onclick="sumText(7)">7</button>
                 <button class="number" id="8" onclick="sumText(8)">8</button>

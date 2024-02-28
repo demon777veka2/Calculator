@@ -12,7 +12,7 @@ namespace Calculator.Controllers
         private readonly ICalculatorService _calculatorService;
         private readonly ISessionService _sessionService;
 
-        public CalculatorController (ICalculatorService calculatorService, ISessionService sessionService) 
+        public CalculatorController(ICalculatorService calculatorService, ISessionService sessionService)
         {
             _calculatorService = calculatorService;
             _sessionService = sessionService;
@@ -33,7 +33,7 @@ namespace Calculator.Controllers
 
             if (isValidInput)
             {
-                int result = _calculatorService.Calculate(input);
+                string result = _calculatorService.Calculate(input);
                 ViewData["result"] = result;
                 _sessionService.set(input, result.ToString());
             }

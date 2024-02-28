@@ -2,7 +2,7 @@
 {
     public interface ICalculatorService
     {
-        int Calculate(string input);
-        bool isValidationExpression(string expression);
+        string Calculate(string input);
+        bool isValidationExpression(string input);
     }
 }

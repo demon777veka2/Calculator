@@ -12,33 +12,7 @@ function getRandomNumber(min, max) {
     return Math.round(Math.random() * (max - min) + min)
 }
 
-function randonExpression() {
-    isConfirm = confirm("Вы хотите сгенерировать случайное выражение?");
-
-    if (isConfirm == true) {
-        var expession = getRandomNumber(1, 4);
-        var randomCountOperator = getRandomNumber(1, 4);
-
-        for (var i = 0; i < randomCountOperator; i++) {
-            var randomOperator = getRandomNumber(1, 4);
-            var randomNumber = String(getRandomNumber(1, 100));
-
-            switch (randomOperator) {
-                case 1:
-                    expession += "+" + randomNumber;
-                    break;
-                case 2:
-                    expession += "-" + randomNumber;
-                    break;
-                case 3:
-                    expession += "*" + randomNumber;
-                    break;
-                case 4:
-                    expession += "/" + randomNumber;
-                    break;
-
-            }
-        }
-        document.getElementById("expression").value = expession;
-    }
+function inputExpression() {
+    expession = prompt("Введите выражение:");
+    document.getElementById("expression").value = expession;
 }
