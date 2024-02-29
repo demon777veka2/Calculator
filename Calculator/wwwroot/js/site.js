@@ -8,11 +8,3 @@ function sumText(text) {
 function clearText() {
     document.getElementById("expression").value = "";
 }
-function getRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min)
-}
-
-function inputExpression() {
-    expession = prompt("Введите выражение:");
-    document.getElementById("expression").value = expession;
-}

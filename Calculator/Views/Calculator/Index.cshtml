@@ -8,12 +8,13 @@
     <title>Простой калькулятор</title>
 </head>
 
-<body onload="inputExpression();">
+<body>
     <div id="container">
         <div id="calculator">
             <form method="post" action="/">
                 <div id="result">
                     <div id="history">
+                        <p id="label">Введите выражение:</p>
                         <input type="text" id="expression" value=@ViewData["expression"] name="input" }>
                     </div>
                     <div id="output">
