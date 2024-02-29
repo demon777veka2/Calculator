@@ -54,7 +54,7 @@ namespace Calculator.Services
 
         private MathExpression splittingAnExpression(string input)
         {
-            Regex regexNumber = new Regex(@"[\d,]");
+            Regex regexNumber = new Regex(@"[\d,.]");
             Regex regexOperation = new Regex(@"[-+*/]");
 
             List<string> operations = new List<string> { };
@@ -85,8 +85,6 @@ namespace Calculator.Services
 
                 if (regexOperation.IsMatch(input[i].ToString()))
                 {
-                    bool q = regexOperation.IsMatch(input[i - 1].ToString());
-
                     if (input[i] == '-' && regexOperation.IsMatch(input[i - 1].ToString()))
                     {
                         if (numbers.Count() - 1 == indexNumber)
@@ -149,11 +147,11 @@ namespace Calculator.Services
 
                     if (splitExpression.Operations[i] == "*")
                     {
-                        calculatingNumbers = (Math.Round(Convert.ToDecimal(splitExpression.Numbers[i]) * Convert.ToDecimal(splitExpression.Numbers[i + 1]), 3)).ToString();
+                        calculatingNumbers = (Math.Round(Convert.ToDouble(splitExpression.Numbers[i]) * Convert.ToDouble(splitExpression.Numbers[i + 1]), 3)).ToString();
                     }
                     else
                     {
-                        calculatingNumbers = (Math.Round(Convert.ToDecimal(splitExpression.Numbers[i]) / Convert.ToDecimal(splitExpression.Numbers[i + 1]), 3)).ToString();
+                        calculatingNumbers = (Math.Round(Convert.ToDouble(splitExpression.Numbers[i]) / Convert.ToDouble(splitExpression.Numbers[i + 1]), 3)).ToString();
                     }
                     splitExpression.Operations[i] = "";
                     splitExpression.Numbers[i] = "";
@@ -196,11 +194,11 @@ namespace Calculator.Services
 
                 if (splitExpression.Operations[i] == "+")
                 {
-                    calculatingNumbers = (Math.Round(Convert.ToDecimal(splitExpression.Numbers[i]) + Convert.ToDecimal(splitExpression.Numbers[i + 1]), 3)).ToString();
+                    calculatingNumbers = (Math.Round(Convert.ToDouble(splitExpression.Numbers[i]) + Convert.ToDouble(splitExpression.Numbers[i + 1]), 3)).ToString();
                 }
                 else
                 {
-                    calculatingNumbers = (Math.Round(Convert.ToDecimal(splitExpression.Numbers[i]) - Convert.ToDecimal(splitExpression.Numbers[i + 1]), 3)).ToString();
+                    calculatingNumbers = (Math.Round(Convert.ToDouble(splitExpression.Numbers[i]) - Convert.ToDouble(splitExpression.Numbers[i + 1]), 3)).ToString();
                 }
                 splitExpression.Operations[i] = "";
                 splitExpression.Numbers[i] = "";
