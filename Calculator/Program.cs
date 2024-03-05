@@ -1,3 +1,5 @@
+using Calculator.Classes;
+using Calculator.Classes.Interfaces;
 using Calculator.Services;
 using Calculator.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -15,9 +17,9 @@ builder.Services.AddSession(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddTransient<ICalculatorService, CalculatorService>();
+builder.Services.AddTransient<IStringCalculator, StringCalculator>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.TryAddSingleton<ISessionService, SessionService>();
+builder.Services.TryAddSingleton<IStorage, Storage>();
 
 var app = builder.Build();
 

@@ -1,54 +1,85 @@
-﻿using Calculator.Models;
-using Calculator.Services;
+﻿using Calculator.Classes.Interfaces;
+using Calculator.Models;
 using Calculator.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Calculator.Controllers
 {
     public class CalculatorController : Controller
     {
-        private readonly ICalculatorService _calculatorService;
-        private readonly ISessionService _sessionService;
+        private readonly IStringCalculator _stringCalculator;
+        private readonly IStorage _storage;
 
-        public CalculatorController(ICalculatorService calculatorService, ISessionService sessionService)
+        public CalculatorController(IStringCalculator stringCalculator, IStorage storage)
         {
-            _calculatorService = calculatorService;
-            _sessionService = sessionService;
+            _stringCalculator = stringCalculator;
+            _storage = storage;
         }
 
         [HttpGet]
         [Route("/")]
-        public IActionResult Index()
+        public IActionResult Index(string expression = "")
         {
-            return View();
+            CalculatorHistory calculatorHistory = _storage.getCalculatorHistory();
+            CalculatorView calculatorView;
+            string mathExpression;
+            string result;
+
+
+            if (calculatorHistory.Expressions.Count != 0)
+            {
+                mathExpression = calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1];
+                result = calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1];
+
+            }
+            else
+            {
+                mathExpression = "";
+                result = "";
+            }
+
+            if (expression != "")
+            {
+                calculatorView = new CalculatorView(
+                    expression,
+                    "",
+                    calculatorHistory,
+                    "Не корректно введено выражение");
+            }
+            else
+            {
+                calculatorView = new CalculatorView(
+                   mathExpression,
+                   result,
+                   calculatorHistory,
+                   null);
+            }
+
+            return View(calculatorView);
         }
 
         [HttpPost]
         [Route("/")]
-        public IActionResult Calculate(string input)
+        public IActionResult calculate(string input)
         {
-            bool isValidInput = _calculatorService.isValidationExpression(input);
+            bool isCorrectExpression = _stringCalculator.isCorrectExpression(input);
 
-            if (isValidInput)
+            if (!isCorrectExpression)
             {
-                string result = _calculatorService.Calculate(input);
-                ViewData["result"] = result;
-                _sessionService.set(input, result.ToString());
-            }
-            else
-            {
-                ViewData["error"] = "Не корректно введено выражение";
+                return RedirectToAction("Index", "Calculator", new { expression = input });
             }
 
-            ViewData["expression"] = input;
+            string result = _stringCalculator.Calculate(input);
+            _storage.addCalculatorHistory(input, result.ToString());
 
-            ViewBag.countExpressions = _sessionService.get("expression").Count();
-            ViewBag.expressions = _sessionService.get("expression");
-            ViewBag.results = _sessionService.get("result");
+            CalculatorHistory calculatorHistory = _storage.getCalculatorHistory();
+            CalculatorView calculatorView = new CalculatorView(
+              calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1],
+              calculatorHistory.Results[calculatorHistory.Results.Count - 1],
+              calculatorHistory,
+              null);
 
-            return View("~/Views/Calculator/Index.cshtml");
+            return View("Index", calculatorView);
         }
     }
 }

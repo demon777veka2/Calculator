@@ -1,8 +1,8 @@
 ﻿namespace Calculator.Services.Interfaces
 {
-    public interface ICalculatorService
+    public interface IStringCalculator
     {
         string Calculate(string input);
-        bool isValidationExpression(string input);
+        bool isCorrectExpression(string input);
     }
 }

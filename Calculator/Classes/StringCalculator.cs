@@ -1,21 +1,20 @@
 ﻿using Calculator.Services.Interfaces;
 using System.Data;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Calculator.Models;
 
 namespace Calculator.Services
 {
-    public class CalculatorService : ICalculatorService
+    public class StringCalculator : IStringCalculator
     {
         private const string regexExpression = @"^(-{0,1}[\d,]+[+-/*])+-{0,1}[\d,]+$";
 
         public string Calculate(string input)
         {
-            return plusMinus(multDiv(calculateInBracket(input)));
+            return calculationPlusMinus(сalculationMultiplicationDivision(calculateInBracket(input)));
         }
 
-        public bool isValidationExpression(string input)
+        public bool isCorrectExpression(string input)
         {
             Regex regex = new Regex(regexExpression);
             string inputWithoutBracket = input;
@@ -124,7 +123,7 @@ namespace Calculator.Services
                 string expression = inputWithoutBracket.Remove(firstCloseBracket, inputWithoutBracket.Length - firstCloseBracket);
                 expression = expression.Remove(0, firstOpenBracket);
 
-                string resultExpression = plusMinus(multDiv(expression));
+                string resultExpression = calculationPlusMinus(сalculationMultiplicationDivision(expression));
 
                 inputWithoutBracket = inputWithoutBracket.Replace("(" + expression + ")", resultExpression);
             }
@@ -132,7 +131,7 @@ namespace Calculator.Services
             return inputWithoutBracket;
         }
 
-        private string multDiv(string input)
+        private string сalculationMultiplicationDivision(string input)
         {
             if (!input.Contains('*') & !input.Contains('/'))
                 return input;
@@ -179,7 +178,7 @@ namespace Calculator.Services
             return splitExpression.Numbers[0].ToString();
         }
 
-        private string plusMinus(string input)
+        private string calculationPlusMinus(string input)
         {
             int countOperation = input.Where(x => x == '+' || x == '-').Count();
 
