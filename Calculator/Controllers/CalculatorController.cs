@@ -20,7 +20,7 @@ namespace Calculator.Controllers
         [Route("/")]
         public IActionResult Index()
         {
-            List<CalculatorSolution> calculatorSolutions = _storage.getCalculatorSolutions();
+            List<CalculatorSolution> calculatorSolutions = _storage.GetCalculatorSolutions();
             CalculatorOutput calculatorView;
             string mathExpression;
             string result;
@@ -50,11 +50,11 @@ namespace Calculator.Controllers
         [Route("/")]
         public IActionResult Сalculate(string input)
         {
-            bool isCorrectExpression = _stringCalculator.isCorrectExpression(input);
+            bool isCorrectExpression = _stringCalculator.IsCorrectExpression(input);
 
             if (!isCorrectExpression)
             {
-                List<CalculatorSolution> calculatorSolutions = _storage.getCalculatorSolutions();
+                List<CalculatorSolution> calculatorSolutions = _storage.GetCalculatorSolutions();
 
                 CalculatorOutput calculatorView = new CalculatorOutput();
                 {
@@ -67,7 +67,7 @@ namespace Calculator.Controllers
             }
 
             string result = _stringCalculator.Calculate(input);
-            _storage.addCalculatorSolution(input, result.ToString());
+            _storage.AddCalculatorSolution(input, result.ToString());
 
             return RedirectToAction("Index");
         }

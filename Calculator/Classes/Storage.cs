@@ -16,7 +16,7 @@ namespace Calculator.Classes
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public List<CalculatorSolution> getCalculatorSolutions()
+        public List<CalculatorSolution> GetCalculatorSolutions()
         {
             var calculatorSolutions = _session.Get<List<CalculatorSolution>>("calculatorSolutions");
 
@@ -27,7 +27,7 @@ namespace Calculator.Classes
 
             return new List<CalculatorSolution>();
         }
-        public void addCalculatorSolution(string expression, string result)
+        public void AddCalculatorSolution(string expression, string result)
         {
             var calculatorSolutions = _session.Get<List<CalculatorSolution>>("calculatorSolutions");
 

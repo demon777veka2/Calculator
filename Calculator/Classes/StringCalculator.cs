@@ -11,10 +11,10 @@ namespace Calculator.Services
 
         public string Calculate(string input)
         {
-            return calculationPlusMinus(сalculationMultiplicationDivision(calculateInBracket(input)));
+            return CalculationPlusMinus(CalculationMultiplicationDivision(CalculateInBracket(input)));
         }
 
-        public bool isCorrectExpression(string input)
+        public bool IsCorrectExpression(string input)
         {
             Regex regex = new Regex(regexExpression);
             string inputWithoutBracket = input;
@@ -51,7 +51,7 @@ namespace Calculator.Services
             return false;
         }
 
-        private MathExpression splittingAnExpression(string input)
+        private MathExpression SplittingAnExpression(string input)
         {
             Regex regexNumber = new Regex(@"[\d,.]");
             Regex regexOperation = new Regex(@"[-+*/]");
@@ -107,7 +107,7 @@ namespace Calculator.Services
             return new MathExpression(operations, numbers);
         }
 
-        private string calculateInBracket(string input)
+        private string CalculateInBracket(string input)
         {
             if (!input.Contains('('))
                 return input;
@@ -123,7 +123,7 @@ namespace Calculator.Services
                 string expression = inputWithoutBracket.Remove(firstCloseBracket, inputWithoutBracket.Length - firstCloseBracket);
                 expression = expression.Remove(0, firstOpenBracket);
 
-                string resultExpression = calculationPlusMinus(сalculationMultiplicationDivision(expression));
+                string resultExpression = CalculationPlusMinus(CalculationMultiplicationDivision(expression));
 
                 inputWithoutBracket = inputWithoutBracket.Replace("(" + expression + ")", resultExpression);
             }
@@ -131,12 +131,12 @@ namespace Calculator.Services
             return inputWithoutBracket;
         }
 
-        private string сalculationMultiplicationDivision(string input)
+        private string CalculationMultiplicationDivision(string input)
         {
             if (!input.Contains('*') & !input.Contains('/'))
                 return input;
 
-            MathExpression splitExpression = splittingAnExpression(input);
+            MathExpression splitExpression = SplittingAnExpression(input);
 
             for (int i = 0; i < splitExpression.Operations.Count(); i++)
             {
@@ -178,14 +178,14 @@ namespace Calculator.Services
             return splitExpression.Numbers[0].ToString();
         }
 
-        private string calculationPlusMinus(string input)
+        private string CalculationPlusMinus(string input)
         {
             int countOperation = input.Where(x => x == '+' || x == '-').Count();
 
             if (countOperation == 0 || (countOperation == 1 && input[0] == '-'))
                 return input;
 
-            MathExpression splitExpression = splittingAnExpression(input);
+            MathExpression splitExpression = SplittingAnExpression(input);
 
             for (int i = 0; i < splitExpression.Operations.Count(); i++)
             {
