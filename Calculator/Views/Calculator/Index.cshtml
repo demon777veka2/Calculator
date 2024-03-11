@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
-@model Calculator.Models.CalculatorView
+@model Calculator.Models.CalculatorOutput
 
 
 @{
@@ -55,7 +55,7 @@
                 <button class="empty" id="empty"></button>
             </div>
         </div>
-        @if (Model.History.Expressions != null)
+        @if (Model.CalculatorSolutions.Any())
         {
             <table>
                 <thead>
@@ -67,13 +67,13 @@
                         <th>Результат
                 </thead>
 
-                @for (int i = 0; i < @Model.History.Expressions.Count; i++)
+                @for (int i = 0; i < @Model.CalculatorSolutions.Count; i++)
                 {
                     <tbody>
                         <tr>
                             <th>@(@i + 1)
-                            <th>@Model.History.Expressions[i]
-                            <th>@Model.History.Results[i]
+                            <th>@Model.CalculatorSolutions[i].Expression
+                            <th>@Model.CalculatorSolutions[i].Result
                     </tbody>
                 }
             </table>

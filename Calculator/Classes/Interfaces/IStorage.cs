@@ -4,7 +4,7 @@ namespace Calculator.Classes.Interfaces
 {
     public interface IStorage
     {
-        public CalculatorHistory getCalculatorHistory();
-        public void addCalculatorHistory(string expression, string result);
+        public List<CalculatorSolution> getCalculatorSolutions();
+        public void addCalculatorSolution(string expression, string result);
     }
 }

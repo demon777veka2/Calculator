@@ -18,19 +18,17 @@ namespace Calculator.Controllers
 
         [HttpGet]
         [Route("/")]
-        public IActionResult Index(string expression = "")
+        public IActionResult Index()
         {
-            CalculatorHistory calculatorHistory = _storage.getCalculatorHistory();
-            CalculatorView calculatorView;
+            List<CalculatorSolution> calculatorSolutions = _storage.getCalculatorSolutions();
+            CalculatorOutput calculatorView;
             string mathExpression;
             string result;
 
-
-            if (calculatorHistory.Expressions.Count != 0)
+            if (calculatorSolutions.Any())
             {
-                mathExpression = calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1];
-                result = calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1];
-
+                mathExpression = calculatorSolutions.Last().Expression;
+                result = calculatorSolutions.Last().Result;
             }
             else
             {
@@ -38,21 +36,11 @@ namespace Calculator.Controllers
                 result = "";
             }
 
-            if (expression != "")
+            calculatorView = new CalculatorOutput();
             {
-                calculatorView = new CalculatorView(
-                    expression,
-                    "",
-                    calculatorHistory,
-                    "Не корректно введено выражение");
-            }
-            else
-            {
-                calculatorView = new CalculatorView(
-                   mathExpression,
-                   result,
-                   calculatorHistory,
-                   null);
+                calculatorView.Expression = mathExpression;
+                calculatorView.Result = result;
+                calculatorView.CalculatorSolutions = calculatorSolutions;
             }
 
             return View(calculatorView);
@@ -60,26 +48,28 @@ namespace Calculator.Controllers
 
         [HttpPost]
         [Route("/")]
-        public IActionResult calculate(string input)
+        public IActionResult Сalculate(string input)
         {
             bool isCorrectExpression = _stringCalculator.isCorrectExpression(input);
 
             if (!isCorrectExpression)
             {
-                return RedirectToAction("Index", "Calculator", new { expression = input });
+                List<CalculatorSolution> calculatorSolutions = _storage.getCalculatorSolutions();
+
+                CalculatorOutput calculatorView = new CalculatorOutput();
+                {
+                    calculatorView.Expression = input;
+                    calculatorView.CalculatorSolutions = calculatorSolutions;
+                    calculatorView.Error = "Не корректно введено выражение";
+                };
+
+                return View("Index", calculatorView);
             }
 
             string result = _stringCalculator.Calculate(input);
-            _storage.addCalculatorHistory(input, result.ToString());
+            _storage.addCalculatorSolution(input, result.ToString());
 
-            CalculatorHistory calculatorHistory = _storage.getCalculatorHistory();
-            CalculatorView calculatorView = new CalculatorView(
-              calculatorHistory.Expressions[calculatorHistory.Expressions.Count - 1],
-              calculatorHistory.Results[calculatorHistory.Results.Count - 1],
-              calculatorHistory,
-              null);
-
-            return View("Index", calculatorView);
+            return RedirectToAction("Index");
         }
     }
 }

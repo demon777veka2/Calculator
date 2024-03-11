@@ -1,6 +1,7 @@
 ﻿using Calculator.Classes.Interfaces;
 using Calculator.Models;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
 
 namespace Calculator.Classes
@@ -10,38 +11,41 @@ namespace Calculator.Classes
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public Storage(IHttpContextAccessor httpContextAccessor) 
+        public Storage(IHttpContextAccessor httpContextAccessor)
         {
-           _httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public CalculatorHistory getCalculatorHistory()
+        public List<CalculatorSolution> getCalculatorSolutions()
         {
-            var calculatorHistory = SessionExtensions.Get<CalculatorHistory>(_session, "calculatorHistory");
+            var calculatorSolutions = _session.Get<List<CalculatorSolution>>("calculatorSolutions");
 
-            if (calculatorHistory != null)
+            if (calculatorSolutions != null)
             {
-                return calculatorHistory;
+                return calculatorSolutions;
             }
 
-            return new CalculatorHistory(new List<string>(), new List<string>());
+            return new List<CalculatorSolution>();
         }
-        public void addCalculatorHistory(string expression, string result)
+        public void addCalculatorSolution(string expression, string result)
         {
-            var calculatorHistory = SessionExtensions.Get<CalculatorHistory>(_session, "calculatorHistory");
+            var calculatorSolutions = _session.Get<List<CalculatorSolution>>("calculatorSolutions");
 
-            if (calculatorHistory == null)
+            if (calculatorSolutions == null)
             {
-                SessionExtensions.Set<CalculatorHistory>(_session, "calculatorHistory",
-                  new CalculatorHistory(new List<string>() { expression }, new List<string>() { result }));
+                calculatorSolutions = new List<CalculatorSolution>()
+                {
+                    new CalculatorSolution(expression, result)
+                };
+
+                _session.Set<List<CalculatorSolution>>("calculatorSolutions", calculatorSolutions);
             }
             else
             {
-                calculatorHistory.Expressions.Add(expression);
-                calculatorHistory.Results.Add(result);
+                calculatorSolutions.Add(new CalculatorSolution(expression, result));
 
-                SessionExtensions.Set<CalculatorHistory>(_session, "calculatorHistory", calculatorHistory);
+                _session.Set<List<CalculatorSolution>>("calculatorSolutions", calculatorSolutions);
             }
         }
-        }
     }
+}

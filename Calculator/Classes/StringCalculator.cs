@@ -19,7 +19,7 @@ namespace Calculator.Services
             Regex regex = new Regex(regexExpression);
             string inputWithoutBracket = input;
 
-            if (input == null)
+            if (input == null || inputWithoutBracket.Count(x => x == '(') != inputWithoutBracket.Count(x => x == ')'))
                 return false;
 
             if (input.Contains('('))
@@ -104,7 +104,7 @@ namespace Calculator.Services
                 }
             }
 
-            return new MathExpression(operations,numbers);
+            return new MathExpression(operations, numbers);
         }
 
         private string calculateInBracket(string input)
